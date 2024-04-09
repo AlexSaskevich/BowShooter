@@ -9973,7 +9973,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1306063899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16360,7 +16360,7 @@ GameObject:
   - component: {fileID: 82932445581253656}
   - component: {fileID: 114453172452625746}
   m_Layer: 0
-  m_Name: NewPlayer
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
