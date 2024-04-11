@@ -1,4 +1,4 @@
-using CMF;
+using Source.Scripts.Input;
 using UnityEngine;
 
 namespace Source.Scripts.CameraSystem
@@ -6,17 +6,18 @@ namespace Source.Scripts.CameraSystem
     public class CameraRotation : MonoBehaviour
     {
         [SerializeField] private Camera _camera;
-        [SerializeField] private CameraInput _cameraInput;
         [SerializeField] private Transform _transform;
         [SerializeField] private CameraRotationParameters _cameraRotationParameters;
 
+        private CameraMouseInputReader _cameraMouseInputReader;
         private float _oldHorizontalInput;
         private float _oldVerticalInput;
         private float _currentXAngle;
         private float _currentYAngle;
 
-        public void Init()
+        public void Init(CameraMouseInputReader cameraMouseInputReader)
         {
+            _cameraMouseInputReader = cameraMouseInputReader;
             _currentXAngle = _transform.localRotation.eulerAngles.x;
             _currentYAngle = _transform.localRotation.eulerAngles.y;
 
@@ -30,8 +31,8 @@ namespace Source.Scripts.CameraSystem
 
         private void Perform()
         {
-            float inputHorizontal = _cameraInput.GetHorizontalCameraInput();
-            float inputVertical = _cameraInput.GetVerticalCameraInput();
+            float inputHorizontal = _cameraMouseInputReader.GetHorizontalCameraInput();
+            float inputVertical = _cameraMouseInputReader.GetVerticalCameraInput();
 
             RotateCamera(inputHorizontal, inputVertical);
         }

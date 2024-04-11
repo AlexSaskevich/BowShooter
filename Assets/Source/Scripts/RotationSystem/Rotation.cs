@@ -7,18 +7,18 @@ namespace Source.Scripts.RotationSystem
     {
         private const float SensitivityX = 10f; // todo config
 
-        private readonly InputHandler _inputHandler;
+        private readonly InputReader _inputReader;
         private readonly Transform _targetTransform;
 
-        public Rotation(Transform targetTransform, InputHandler inputHandler)
+        public Rotation(Transform targetTransform, InputReader inputReader)
         {
             _targetTransform = targetTransform;
-            _inputHandler = inputHandler;
+            _inputReader = inputReader;
         }
 
         public void Perform()
         {
-            _targetTransform.Rotate(Vector3.up * (_inputHandler.LookInput.x * SensitivityX * Time.deltaTime));
+            _targetTransform.Rotate(Vector3.up * (_inputReader.LookInput.x * SensitivityX * Time.deltaTime));
         }
     }
 }

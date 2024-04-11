@@ -6,25 +6,25 @@ namespace Source.Scripts.CameraSystem
     public class FirstPersonCamera
     {
         private readonly Camera _camera;
-        private readonly InputHandler _inputHandler;
+        private readonly InputReader _inputReader;
         private readonly FirstPersonCameraConfig _config;
         private readonly Transform _playerTransform;
         private float _rotationX;
         private float _rotationY;
 
-        public FirstPersonCamera(Camera camera, InputHandler inputHandler, FirstPersonCameraConfig config,
+        public FirstPersonCamera(Camera camera, InputReader inputReader, FirstPersonCameraConfig config,
             Transform playerTransform)
         {
             _playerTransform = playerTransform;
             _camera = camera;
             _config = config;
-            _inputHandler = inputHandler;
+            _inputReader = inputReader;
         }
 
         public void Rotate()
         {
-            float mouseX = _inputHandler.LookInput.x;
-            float mouseY = _inputHandler.LookInput.y;
+            float mouseX = _inputReader.LookInput.x;
+            float mouseY = _inputReader.LookInput.y;
 
             _rotationX -= mouseY * _config.SensitivityY * Time.deltaTime;
             _rotationX = Mathf.Clamp(_rotationX, _config.MinAngle, _config.MaxAngle);
