@@ -12,13 +12,14 @@ namespace Source.Scripts.PlayerEntity
         [SerializeField] private FollowingToTarget _followingToTarget;
         [SerializeField] private CameraRotation _cameraRotation;
         [SerializeField] private CameraMouseInputParameters _cameraMouseInputParameters;
+        [SerializeField] private PlayerMovement _playerMovement;
 
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
-            InputReader inputReader = new();
-            CameraMouseInputReader cameraMouseInputReader = new(inputReader, _cameraMouseInputParameters);
+            InputReader inputReader = new(_cameraMouseInputParameters);
             _followingToTarget.Init();
-            _cameraRotation.Init(cameraMouseInputReader);
+            _cameraRotation.Init(inputReader);
+            _playerMovement.Init(inputReader);
 
             ComponentContainer componentContainer = new();
 

@@ -9,15 +9,15 @@ namespace Source.Scripts.CameraSystem
         [SerializeField] private Transform _transform;
         [SerializeField] private CameraRotationParameters _cameraRotationParameters;
 
-        private CameraMouseInputReader _cameraMouseInputReader;
+        private InputReader _cameraMouseInputReader;
         private float _oldHorizontalInput;
         private float _oldVerticalInput;
         private float _currentXAngle;
         private float _currentYAngle;
 
-        public void Init(CameraMouseInputReader cameraMouseInputReader)
+        public void Init(InputReader inputReader)
         {
-            _cameraMouseInputReader = cameraMouseInputReader;
+            _cameraMouseInputReader = inputReader;
             _currentXAngle = _transform.localRotation.eulerAngles.x;
             _currentYAngle = _transform.localRotation.eulerAngles.y;
 

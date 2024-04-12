@@ -4286,6 +4286,7 @@ MonoBehaviour:
     <InvertHorizontalInput>k__BackingField: 0
     <InvertVerticalInput>k__BackingField: 0
     <MouseInputMultiplier>k__BackingField: 0.01
+  _playerMovement: {fileID: 136958808108521560}
 --- !u!1001 &536106218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10651,7 +10652,7 @@ MonoBehaviour:
   _cameraRotationParameters:
     <UpperVerticalLimit>k__BackingField: 60
     <LowerVerticalLimit>k__BackingField: 60
-    <CameraSpeed>k__BackingField: 25
+    <CameraSpeed>k__BackingField: 10
     <SmoothCameraRotation>k__BackingField: 0
     <CameraSmoothingFactor>k__BackingField: 25
 --- !u!1001 &1369245477
@@ -16496,10 +16497,9 @@ GameObject:
   - component: {fileID: 54434734836844178}
   - component: {fileID: 136958808108521559}
   - component: {fileID: 114620729095693158}
-  - component: {fileID: 114036293073938806}
-  - component: {fileID: 114444106580912058}
   - component: {fileID: 82932445581253656}
   - component: {fileID: 114453172452625746}
+  - component: {fileID: 136958808108521560}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -16727,45 +16727,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114036293073938806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1273851091137616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f5e44db14072ea4c964da3b192181c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 7
-  airControlRate: 2
-  jumpSpeed: 10
-  jumpDuration: 0.2
-  airFriction: 0.5
-  groundFriction: 100
-  gravity: 30
-  slideGravity: 5
-  slopeLimit: 80
-  useLocalMomentum: 1
-  cameraTransform: {fileID: 4343462811388162}
---- !u!114 &114444106580912058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1273851091137616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9819db9f56d8ad4c83e05807a209fc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horizontalInputAxis: Horizontal
-  verticalInputAxis: Vertical
-  jumpKey: 32
-  useRawInput: 1
 --- !u!114 &114453172452625746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16853,3 +16814,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d81c1b9762044ae99fd91f07bed2a2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &136958808108521560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273851091137616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40209d7c75b04913a0792659ac270f37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mover: {fileID: 114620729095693158}
+  _playerTransform: {fileID: 4122627349260900}
+  _ceilingDetector: {fileID: 0}
+  _cameraTransform: {fileID: 4343462811388162}
+  <MovementSpeed>k__BackingField: 7
+  <AirControlRate>k__BackingField: 2
+  <JumpSpeed>k__BackingField: 10
+  <JumpDuration>k__BackingField: 0.2
+  <AirFriction>k__BackingField: 0.5
+  <GroundFriction>k__BackingField: 100
+  <Gravity>k__BackingField: 30
+  <SlideGravity>k__BackingField: 5
+  <SlopeLimit>k__BackingField: 80
+  <UseLocalMomentum>k__BackingField: 1
