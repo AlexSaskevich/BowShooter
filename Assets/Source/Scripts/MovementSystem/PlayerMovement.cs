@@ -1,15 +1,17 @@
+using System;
 using CMF;
 using Source.Scripts.Input;
 using UnityEngine;
 
 namespace Source.Scripts.MovementSystem
 {
-    public class PlayerMovement : Controller
+    public class PlayerMovement
     {
-        [SerializeField] private Mover _mover;
-        [SerializeField] private Transform _playerTransform;
-        [SerializeField] private CeilingDetector _ceilingDetector; // can be null
-        [SerializeField] private Transform _cameraTransform;
+        private readonly InputReader _inputReader;
+        private readonly CeilingDetector _ceilingDetector;
+        private readonly Transform _cameraTransform;
+        private readonly Transform _playerTransform;
+        private readonly Mover _mover;
 
         private bool _jumpInputIsLocked;
         private bool _jumpKeyWasPressed;
@@ -19,40 +21,26 @@ namespace Source.Scripts.MovementSystem
         private float _currentJumpStartTime;
         private Vector3 _savedVelocity = Vector3.zero;
         private Vector3 _savedMovementVelocity = Vector3.zero;
-        private InputReader _inputReader;
-        private ControllerState _currentControllerState = ControllerState.Falling;
+        private MovementState _currentMovementState = MovementState.Falling;
 
-        [field: SerializeField] public float MovementSpeed { get; private set; } = 7f;
-        [field: SerializeField] public float AirControlRate { get; private set; } = 2f;
-        [field: SerializeField] public float JumpSpeed { get; private set; } = 10f;
-        [field: SerializeField] public float JumpDuration { get; private set; } = 0.2f;
-        [field: SerializeField] public float AirFriction { get; private set; } = 0.5f;
-        [field: SerializeField] public float GroundFriction { get; private set; } = 100f;
-        [field: SerializeField] public float Gravity { get; private set; } = 30f;
-        [field: SerializeField] public float SlideGravity { get; private set; } = 5f;
-        [field: SerializeField] public float SlopeLimit { get; private set; } = 80f;
-        [field: SerializeField] public bool UseLocalMomentum { get; private set; }
-
-        public enum ControllerState
-        {
-            Grounded,
-            Sliding,
-            Falling,
-            Rising,
-            Jumping
-        }
-
-        public void Init(InputReader inputReader)
+        public PlayerMovement(InputReader inputReader, Mover mover, Transform playerTransform,
+            PlayerMovementParameters playerMovementParameters, Transform cameraControls,
+            CeilingDetector ceilingDetector = null)
         {
             _inputReader = inputReader;
+            _mover = mover;
+            _playerTransform = playerTransform;
+            PlayerMovementParameters = playerMovementParameters;
+            _cameraTransform = cameraControls;
+            _ceilingDetector = ceilingDetector;
         }
 
-        private void Update()
-        {
-            HandleJumpKeyInput();
-        }
+        public event Action<Vector3> Jumped;
+        public event Action<Vector3> Landed;
 
-        private void HandleJumpKeyInput()
+        public PlayerMovementParameters PlayerMovementParameters { get; private set; }
+
+        public void HandleJumpKeyInput()
         {
             bool newJumpKeyPressedState = IsJumpKeyPressed();
 
@@ -70,16 +58,11 @@ namespace Source.Scripts.MovementSystem
             _jumpKeyIsPressed = newJumpKeyPressedState;
         }
 
-        private void FixedUpdate()
-        {
-            ControllerUpdate();
-        }
-
-        private void ControllerUpdate()
+        public void ControllerUpdate()
         {
             _mover.CheckForGround();
 
-            _currentControllerState = DetermineControllerState();
+            _currentMovementState = DetermineControllerState();
 
             HandleMomentum();
 
@@ -87,14 +70,14 @@ namespace Source.Scripts.MovementSystem
 
             Vector3 velocity = Vector3.zero;
 
-            if (_currentControllerState == ControllerState.Grounded)
+            if (_currentMovementState == MovementState.Grounded)
             {
                 velocity = CalculateMovementVelocity();
             }
 
             Vector3 worldMomentum = _momentum;
 
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 worldMomentum = _playerTransform.localToWorldMatrix * _momentum;
             }
@@ -147,7 +130,7 @@ namespace Source.Scripts.MovementSystem
         {
             Vector3 velocity = CalculateMovementDirection();
 
-            velocity *= MovementSpeed;
+            velocity *= PlayerMovementParameters.MovementSpeed;
 
             return velocity;
         }
@@ -157,96 +140,96 @@ namespace Source.Scripts.MovementSystem
             return _inputReader.IsJumpButtonPressed;
         }
 
-        private ControllerState DetermineControllerState()
+        private MovementState DetermineControllerState()
         {
             bool isRising = IsRisingOrFalling() && VectorMath.GetDotProduct(GetMomentum(), _playerTransform.up) > 0f;
             bool isSliding = _mover.IsGrounded() && IsGroundTooSteep();
 
-            if (_currentControllerState == ControllerState.Grounded)
+            if (_currentMovementState == MovementState.Grounded)
             {
                 if (isRising)
                 {
                     OnGroundContactLost();
-                    return ControllerState.Rising;
+                    return MovementState.Rising;
                 }
 
                 if (!_mover.IsGrounded())
                 {
                     OnGroundContactLost();
-                    return ControllerState.Falling;
+                    return MovementState.Falling;
                 }
 
                 if (isSliding)
                 {
                     OnGroundContactLost();
-                    return ControllerState.Sliding;
+                    return MovementState.Sliding;
                 }
 
-                return ControllerState.Grounded;
+                return MovementState.Grounded;
             }
 
-            if (_currentControllerState == ControllerState.Falling)
+            if (_currentMovementState == MovementState.Falling)
             {
                 if (isRising)
                 {
-                    return ControllerState.Rising;
+                    return MovementState.Rising;
                 }
 
                 if (_mover.IsGrounded() && !isSliding)
                 {
                     OnGroundContactRegained();
-                    return ControllerState.Grounded;
+                    return MovementState.Grounded;
                 }
 
                 if (isSliding)
                 {
-                    return ControllerState.Sliding;
+                    return MovementState.Sliding;
                 }
 
-                return ControllerState.Falling;
+                return MovementState.Falling;
             }
 
-            if (_currentControllerState == ControllerState.Sliding)
+            if (_currentMovementState == MovementState.Sliding)
             {
                 if (isRising)
                 {
                     OnGroundContactLost();
-                    return ControllerState.Rising;
+                    return MovementState.Rising;
                 }
 
                 if (!_mover.IsGrounded())
                 {
                     OnGroundContactLost();
-                    return ControllerState.Falling;
+                    return MovementState.Falling;
                 }
 
                 if (_mover.IsGrounded() && !isSliding)
                 {
                     OnGroundContactRegained();
-                    return ControllerState.Grounded;
+                    return MovementState.Grounded;
                 }
 
-                return ControllerState.Sliding;
+                return MovementState.Sliding;
             }
 
-            if (_currentControllerState == ControllerState.Rising)
+            if (_currentMovementState == MovementState.Rising)
             {
                 if (!isRising)
                 {
                     if (_mover.IsGrounded() && !isSliding)
                     {
                         OnGroundContactRegained();
-                        return ControllerState.Grounded;
+                        return MovementState.Grounded;
                     }
 
                     if (isSliding)
                     {
-                        return ControllerState.Sliding;
+                        return MovementState.Sliding;
                     }
 
                     if (!_mover.IsGrounded())
                     {
-                        return ControllerState.Falling;
+                        return MovementState.Falling;
                     }
                 }
 
@@ -255,23 +238,23 @@ namespace Source.Scripts.MovementSystem
                     if (_ceilingDetector.HitCeiling())
                     {
                         OnCeilingContact();
-                        return ControllerState.Falling;
+                        return MovementState.Falling;
                     }
                 }
 
-                return ControllerState.Rising;
+                return MovementState.Rising;
             }
 
-            if (_currentControllerState == ControllerState.Jumping)
+            if (_currentMovementState == MovementState.Jumping)
             {
-                if (Time.time - _currentJumpStartTime > JumpDuration)
+                if (Time.time - _currentJumpStartTime > PlayerMovementParameters.JumpDuration)
                 {
-                    return ControllerState.Rising;
+                    return MovementState.Rising;
                 }
 
                 if (_jumpKeyWasLetGo)
                 {
-                    return ControllerState.Rising;
+                    return MovementState.Rising;
                 }
 
                 if (_ceilingDetector != null)
@@ -279,33 +262,33 @@ namespace Source.Scripts.MovementSystem
                     if (_ceilingDetector.HitCeiling())
                     {
                         OnCeilingContact();
-                        return ControllerState.Falling;
+                        return MovementState.Falling;
                     }
                 }
 
-                return ControllerState.Jumping;
+                return MovementState.Jumping;
             }
 
-            return ControllerState.Falling;
+            return MovementState.Falling;
         }
 
         private void HandleJumping()
         {
-            if (_currentControllerState == ControllerState.Grounded)
+            if (_currentMovementState == MovementState.Grounded)
             {
                 if ((_jumpKeyIsPressed || _jumpKeyWasPressed) && !_jumpInputIsLocked)
                 {
                     OnGroundContactLost();
                     OnJumpStart();
 
-                    _currentControllerState = ControllerState.Jumping;
+                    _currentMovementState = MovementState.Jumping;
                 }
             }
         }
 
         private void HandleMomentum()
         {
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.localToWorldMatrix * _momentum;
             }
@@ -319,9 +302,9 @@ namespace Source.Scripts.MovementSystem
                 horizontalMomentum = _momentum - verticalMomentum;
             }
 
-            verticalMomentum -= _playerTransform.up * (Gravity * Time.deltaTime);
+            verticalMomentum -= _playerTransform.up * (PlayerMovementParameters.Gravity * Time.deltaTime);
 
-            if (_currentControllerState == ControllerState.Grounded &&
+            if (_currentMovementState == MovementState.Grounded &&
                 VectorMath.GetDotProduct(verticalMomentum, _playerTransform.up) < 0f)
             {
                 verticalMomentum = Vector3.zero;
@@ -331,7 +314,7 @@ namespace Source.Scripts.MovementSystem
             {
                 Vector3 movementVelocity = CalculateMovementVelocity();
 
-                if (horizontalMomentum.magnitude > MovementSpeed)
+                if (horizontalMomentum.magnitude > PlayerMovementParameters.MovementSpeed)
                 {
                     if (VectorMath.GetDotProduct(movementVelocity, horizontalMomentum.normalized) > 0f)
                     {
@@ -340,16 +323,19 @@ namespace Source.Scripts.MovementSystem
                     }
 
                     const float airControlMultiplier = 0.25f;
-                    horizontalMomentum += movementVelocity * (Time.deltaTime * AirControlRate * airControlMultiplier);
+                    horizontalMomentum += movementVelocity *
+                                          (Time.deltaTime * PlayerMovementParameters.AirControlRate *
+                                           airControlMultiplier);
                 }
                 else
                 {
-                    horizontalMomentum += movementVelocity * (Time.deltaTime * AirControlRate);
-                    horizontalMomentum = Vector3.ClampMagnitude(horizontalMomentum, MovementSpeed);
+                    horizontalMomentum += movementVelocity * (Time.deltaTime * PlayerMovementParameters.AirControlRate);
+                    horizontalMomentum =
+                        Vector3.ClampMagnitude(horizontalMomentum, PlayerMovementParameters.MovementSpeed);
                 }
             }
 
-            if (_currentControllerState == ControllerState.Sliding)
+            if (_currentMovementState == MovementState.Sliding)
             {
                 Vector3 pointDownVector =
                     Vector3.ProjectOnPlane(_mover.GetGroundNormal(), _playerTransform.up).normalized;
@@ -360,12 +346,14 @@ namespace Source.Scripts.MovementSystem
             }
 
             horizontalMomentum = VectorMath.IncrementVectorTowardTargetVector(horizontalMomentum,
-                _currentControllerState == ControllerState.Grounded ? GroundFriction : AirFriction, Time.deltaTime,
+                _currentMovementState == MovementState.Grounded
+                    ? PlayerMovementParameters.GroundFriction
+                    : PlayerMovementParameters.AirFriction, Time.deltaTime,
                 Vector3.zero);
 
             _momentum = horizontalMomentum + verticalMomentum;
 
-            if (_currentControllerState == ControllerState.Sliding)
+            if (_currentMovementState == MovementState.Sliding)
             {
                 _momentum = Vector3.ProjectOnPlane(_momentum, _mover.GetGroundNormal());
 
@@ -376,16 +364,16 @@ namespace Source.Scripts.MovementSystem
 
                 Vector3 slideDirection =
                     Vector3.ProjectOnPlane(-_playerTransform.up, _mover.GetGroundNormal()).normalized;
-                _momentum += slideDirection * (SlideGravity * Time.deltaTime);
+                _momentum += slideDirection * (PlayerMovementParameters.SlideGravity * Time.deltaTime);
             }
 
-            if (_currentControllerState == ControllerState.Jumping)
+            if (_currentMovementState == MovementState.Jumping)
             {
                 _momentum = VectorMath.RemoveDotVector(_momentum, _playerTransform.up);
-                _momentum += _playerTransform.up * JumpSpeed;
+                _momentum += _playerTransform.up * PlayerMovementParameters.JumpSpeed;
             }
 
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.worldToLocalMatrix * _momentum;
             }
@@ -393,20 +381,20 @@ namespace Source.Scripts.MovementSystem
 
         private void OnJumpStart()
         {
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.localToWorldMatrix * _momentum;
             }
 
-            _momentum += _playerTransform.up * JumpSpeed;
+            _momentum += _playerTransform.up * PlayerMovementParameters.JumpSpeed;
 
             _currentJumpStartTime = Time.time;
 
             _jumpInputIsLocked = true;
 
-            OnJump?.Invoke(_momentum);
+            Jumped?.Invoke(_momentum);
 
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.worldToLocalMatrix * _momentum;
             }
@@ -414,7 +402,7 @@ namespace Source.Scripts.MovementSystem
 
         private void OnGroundContactLost()
         {
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.localToWorldMatrix * _momentum;
             }
@@ -438,7 +426,7 @@ namespace Source.Scripts.MovementSystem
 
             _momentum += velocity;
 
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.worldToLocalMatrix * _momentum;
             }
@@ -446,29 +434,29 @@ namespace Source.Scripts.MovementSystem
 
         private void OnGroundContactRegained()
         {
-            if (OnLand != null)
+            if (Landed != null)
             {
                 Vector3 collisionVelocity = _momentum;
 
-                if (UseLocalMomentum)
+                if (PlayerMovementParameters.UseLocalMomentum)
                 {
                     collisionVelocity = _playerTransform.localToWorldMatrix * collisionVelocity;
                 }
 
-                OnLand(collisionVelocity);
+                Landed(collisionVelocity);
             }
         }
 
         private void OnCeilingContact()
         {
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.localToWorldMatrix * _momentum;
             }
 
             _momentum = VectorMath.RemoveDotVector(_momentum, _playerTransform.up);
 
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.worldToLocalMatrix * _momentum;
             }
@@ -490,15 +478,15 @@ namespace Source.Scripts.MovementSystem
                 return true;
             }
 
-            return Vector3.Angle(_mover.GetGroundNormal(), _playerTransform.up) > SlopeLimit;
+            return Vector3.Angle(_mover.GetGroundNormal(), _playerTransform.up) > PlayerMovementParameters.SlopeLimit;
         }
 
-        public override Vector3 GetVelocity()
+        public Vector3 GetVelocity()
         {
             return _savedVelocity;
         }
 
-        public override Vector3 GetMovementVelocity()
+        public Vector3 GetMovementVelocity()
         {
             return _savedMovementVelocity;
         }
@@ -507,7 +495,7 @@ namespace Source.Scripts.MovementSystem
         {
             Vector3 worldMomentum = _momentum;
 
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 worldMomentum = _playerTransform.localToWorldMatrix * _momentum;
             }
@@ -515,26 +503,26 @@ namespace Source.Scripts.MovementSystem
             return worldMomentum;
         }
 
-        public override bool IsGrounded()
+        public bool IsGrounded()
         {
-            return _currentControllerState is ControllerState.Grounded or ControllerState.Sliding;
+            return _currentMovementState is MovementState.Grounded or MovementState.Sliding;
         }
 
         public bool IsSliding()
         {
-            return _currentControllerState == ControllerState.Sliding;
+            return _currentMovementState == MovementState.Sliding;
         }
 
         public void AddMomentum(Vector3 momentum)
         {
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.localToWorldMatrix * _momentum;
             }
 
             _momentum += momentum;
 
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.worldToLocalMatrix * _momentum;
             }
@@ -542,7 +530,7 @@ namespace Source.Scripts.MovementSystem
 
         public void SetMomentum(Vector3 newMomentum)
         {
-            if (UseLocalMomentum)
+            if (PlayerMovementParameters.UseLocalMomentum)
             {
                 _momentum = _playerTransform.worldToLocalMatrix * newMomentum;
             }

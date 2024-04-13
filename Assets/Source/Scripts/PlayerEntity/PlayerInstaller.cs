@@ -9,25 +9,37 @@ namespace Source.Scripts.PlayerEntity
 {
     public class PlayerInstaller : MonoBehaviour, IInstaller
     {
-        [SerializeField] private FollowingToTarget _followingToTarget;
-        [SerializeField] private CameraRotation _cameraRotation;
+        [SerializeField] private Transform _playerTransform;
+        [SerializeField] private Rigidbody _playerRigidbody;
+        [SerializeField] private Collider _playerCollider;
+        [SerializeField] private Transform _cameraControls;
         [SerializeField] private CameraMouseInputParameters _cameraMouseInputParameters;
-        [SerializeField] private PlayerMovement _playerMovement;
+        [SerializeField] private FollowingToTargetParameters _followingToTargetParameters;
+        [SerializeField] private MoverParameters _moverParameters;
+        [SerializeField] private PlayerMovementParameters _playerMovementParameters;
+        [SerializeField] private CameraRotationParameters _cameraRotationParameters;
 
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
             InputReader inputReader = new(_cameraMouseInputParameters);
-            _followingToTarget.Init();
-            _cameraRotation.Init(inputReader);
-            _playerMovement.Init(inputReader);
+            Mover mover = new(_playerTransform, _playerRigidbody, _playerCollider, _moverParameters);
+            FollowingToTarget followingToTarget = new(_playerTransform, _cameraControls, _followingToTargetParameters);
+            PlayerMovement playerMovement = new(inputReader, mover, _playerTransform, _playerMovementParameters,
+                _cameraControls);
+            CameraRotation cameraRotation = new(inputReader, _cameraControls, _cameraRotationParameters);
 
             ComponentContainer componentContainer = new();
 
             componentContainer
-                .AddComponent(_followingToTarget);
+                .AddComponent(followingToTarget)
+                .AddComponent(cameraRotation)
+                .AddComponent(mover)
+                .AddComponent(playerMovement);
 
             containerBuilder
-                .AddSingleton(componentContainer, typeof(IComponentContainer));
+                .AddSingleton(componentContainer, typeof(IComponentContainer))
+                .AddSingleton(playerMovement)
+                .AddSingleton(mover);
         }
     }
 }

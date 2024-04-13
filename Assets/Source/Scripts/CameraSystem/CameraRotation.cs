@@ -3,33 +3,31 @@ using UnityEngine;
 
 namespace Source.Scripts.CameraSystem
 {
-    public class CameraRotation : MonoBehaviour
+    public class CameraRotation
     {
-        [SerializeField] private Camera _camera;
-        [SerializeField] private Transform _transform;
-        [SerializeField] private CameraRotationParameters _cameraRotationParameters;
+        private readonly Transform _transform;
+        private readonly CameraRotationParameters _cameraRotationParameters;
 
-        private InputReader _cameraMouseInputReader;
+        private readonly InputReader _cameraMouseInputReader;
         private float _oldHorizontalInput;
         private float _oldVerticalInput;
         private float _currentXAngle;
         private float _currentYAngle;
 
-        public void Init(InputReader inputReader)
+        public CameraRotation(InputReader inputReader, Transform cameraControls,
+            CameraRotationParameters cameraRotationParameters)
         {
             _cameraMouseInputReader = inputReader;
-            _currentXAngle = _transform.localRotation.eulerAngles.x;
-            _currentYAngle = _transform.localRotation.eulerAngles.y;
+            _transform = cameraControls;
+            _cameraRotationParameters = cameraRotationParameters;
+            Quaternion localRotation = _transform.localRotation;
+            _currentXAngle = localRotation.eulerAngles.x;
+            _currentYAngle = localRotation.eulerAngles.y;
 
             RotateCamera(0f, 0f);
         }
 
-        private void Update()
-        {
-            Perform();
-        }
-
-        private void Perform()
+        public void Perform()
         {
             float inputHorizontal = _cameraMouseInputReader.GetHorizontalCameraInput();
             float inputVertical = _cameraMouseInputReader.GetVerticalCameraInput();
