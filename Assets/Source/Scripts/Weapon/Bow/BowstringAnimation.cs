@@ -12,16 +12,12 @@ namespace Source.Scripts.Weapon.Bow
 
         private Tween _tween;
 
-        public void PlayReleaseBowstringAnimation(SkinnedMeshRenderer skinnedMeshRenderer, float targetValue,
+        public void PlayReleaseBowstringAnimation(Transform animatedTransform, float targetValue,
             Action finished = null)
         {
             _tween?.Kill();
-            _tween = DOTween.To(() => skinnedMeshRenderer.GetBlendShapeWeight(0),
-                    x => skinnedMeshRenderer.SetBlendShapeWeight(0, x), targetValue, ReleaseDuration)
-                .SetEase(ReleaseEase).OnComplete(() =>
-                {
-                    finished?.Invoke();
-                });
+            _tween = animatedTransform.DOLocalMoveY(targetValue, ReleaseDuration).SetEase(ReleaseEase)
+                .OnComplete(() => finished?.Invoke());
         }
     }
 }

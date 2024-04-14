@@ -6,21 +6,22 @@ namespace Source.Scripts.Weapon.Bow
     [Serializable]
     public class BowView
     {
-        private const float DefaultBlendShapeValue = 30f;
-        private const float MaxBlendShapeValue = 100f;
-
-        [SerializeField] private SkinnedMeshRenderer _skinnedMeshRenderer;
         [SerializeField] private BowstringAnimation _animation;
+        [SerializeField] private Transform _bowstring;
+        [SerializeField] private float _defaultY;
+        [SerializeField] private float _maxY;
 
         public void PullBowstring(float tension)
         {
-            float blendShapeValue = Mathf.Lerp(DefaultBlendShapeValue, MaxBlendShapeValue, tension);
-            _skinnedMeshRenderer.SetBlendShapeWeight(0, blendShapeValue);
+            float targetValue = Mathf.Lerp(_defaultY, _maxY, tension);
+            Vector3 bowstringLocalPosition = _bowstring.localPosition;
+            bowstringLocalPosition.y = targetValue;
+            _bowstring.localPosition = bowstringLocalPosition;
         }
 
         public void ReleaseBowstring()
         {
-            _animation.PlayReleaseBowstringAnimation(_skinnedMeshRenderer, DefaultBlendShapeValue);
+            _animation.PlayReleaseBowstringAnimation(_bowstring, _defaultY);
         }
     }
 }
