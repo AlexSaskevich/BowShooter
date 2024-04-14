@@ -21,6 +21,7 @@ namespace Source.Scripts.PlayerEntity
 
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
+            Cursor.lockState = CursorLockMode.Locked;
             InputReader inputReader = new(_cameraMouseInputParameters);
             Mover mover = new(_playerTransform, _playerRigidbody, _playerCollider, _moverParameters);
             FollowingToTarget followingToTarget = new(_playerTransform, _cameraControls, _followingToTargetParameters);
@@ -39,7 +40,8 @@ namespace Source.Scripts.PlayerEntity
             containerBuilder
                 .AddSingleton(componentContainer, typeof(IComponentContainer))
                 .AddSingleton(playerMovement)
-                .AddSingleton(mover);
+                .AddSingleton(mover)
+                .AddSingleton(inputReader);
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Source.Scripts.Input
         public Vector2 MoveInput { get; private set; }
         public Vector2 LookInput => _characterInput.Player.Look.ReadValue<Vector2>();
         public bool IsJumpButtonPressed => _characterInput.Player.Jump.IsPressed();
+        public bool IsFireButtonPressed => _characterInput.Player.Fire.IsPressed();
+        public bool IsFireButtonWasReleased => _characterInput.Player.Fire.WasReleasedThisFrame();
 
         public void Dispose()
         {
