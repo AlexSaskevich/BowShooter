@@ -461,7 +461,7 @@ PrefabInstance:
     - target: {fileID: 4130928028684003022, guid: 382f0e3cbe0df9345a365bb6fc91c588,
         type: 3}
       propertyPath: m_Name
-      value: NewBow
+      value: Bow
       objectReference: {fileID: 0}
     - target: {fileID: 4562087070634504585, guid: 382f0e3cbe0df9345a365bb6fc91c588,
         type: 3}
