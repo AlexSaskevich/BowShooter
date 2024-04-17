@@ -177,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 310799142992712996}
   - component: {fileID: 6098217440425282295}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bowstring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ Transform:
   - {fileID: 7126121159410548114}
   - {fileID: 1871273588004584036}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9027143779795589878
 MonoBehaviour:
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 867494654304814884}
   - component: {fileID: 90464972774881240}
   - component: {fileID: 7583260303024848403}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
