@@ -41,7 +41,8 @@ namespace Source.Scripts.PlayerEntity
                 .AddSingleton(componentContainer, typeof(IComponentContainer))
                 .AddSingleton(playerMovement)
                 .AddSingleton(mover)
-                .AddSingleton(inputReader);
+                .AddSingleton(inputReader)
+                .AddSingleton(FindObjectOfType<Player>());
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Source.Scripts.Weapon.Arrows
         {
             _arrowTransform.parent = parent;
             _arrowTransform.localPosition = Vector3.zero;
-            _arrowTransform.localRotation = Quaternion.identity;
+            _arrowTransform.localRotation = Quaternion.Euler(new Vector3(90, 0, 0));
             _rigidbody.isKinematic = true;
             _arrowTorque.StopAddTorque();
         }
