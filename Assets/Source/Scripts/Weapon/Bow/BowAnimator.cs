@@ -25,13 +25,15 @@ namespace Source.Scripts.Weapon.Bow
             if (_inputReader.IsFireButtonPressed)
             {
                 _currentTension = TensionCalculator.Calculate(_currentTension, 1, _tensionSpeed);
-                _animator.SetFloat(_tensionHash, _currentTension);
+                SetFloat(_tensionHash, _currentTension);
             }
             else if (_inputReader.IsFireButtonWasReleased)
             {
                 _currentTension = 0;
-                _animator.SetFloat(_tensionHash, _currentTension);
+                SetFloat(_tensionHash, _currentTension);
             }
         }
+
+        private void SetFloat(int hash, float value) => _animator.SetFloat(hash, value);
     }
 }
