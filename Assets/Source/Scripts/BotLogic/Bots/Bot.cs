@@ -1,5 +1,6 @@
 using System.Linq;
 using BehaviorDesigner.Runtime;
+using EasyButtons;
 using Reflex.Attributes;
 using Source.Scripts.BotLogic.Bots.Actions;
 using Source.Scripts.BotLogic.Bots.Actions.Patrolling;
@@ -12,14 +13,18 @@ using Source.Scripts.Infrastructure;
 using Source.Scripts.PlayerEntity;
 using UnityEditor;
 using UnityEngine;
+using Animation = Source.Scripts.AnimationSystem.Animation;
 
 namespace Source.Scripts.BotLogic.Bots
 {
     public class Bot : MonoBehaviour
     {
+        [SerializeField] private Animator _animator;
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private BehaviorTree _behaviorTree;
         [SerializeField] private PatrolPoint[] _patrolPoints;
+        [SerializeField] private Transform[] _transforms;
+        [SerializeField] private bool _isNeedShowPointNames = true;
 
         public IComponentContainer ComponentContainer { get; private set; }
         public Transform Target { get; private set; }
@@ -33,10 +38,12 @@ namespace Source.Scripts.BotLogic.Bots
 
             Movement movement = new(_characterController);
             Rotation rotation = new(transform);
+            Animation animation = new(_animator);
 
             ComponentContainer
                 .AddComponent(movement)
-                .AddComponent(rotation);
+                .AddComponent(rotation)
+                .AddComponent(animation);
 
             IsTargetNearby isTargetNearby = new(player.transform, transform, distance: 4f);
             Container<ICondition> conditionsContainer = new(new ICondition[] { isTargetNearby });
@@ -61,6 +68,20 @@ namespace Source.Scripts.BotLogic.Bots
             return actionsContainer;
         }
 
+        [Button]
+        private void SetPatrolPoints()
+        {
+            _patrolPoints = new PatrolPoint[_transforms.Length];
+
+            for (int i = 0; i < _patrolPoints.Length; i++)
+            {
+                PatrolPoint patrolPoint = _patrolPoints[i];
+                patrolPoint.WaitTime = 1f;
+                patrolPoint.Point = _transforms[i];
+                _patrolPoints[i] = patrolPoint;
+            }
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
@@ -72,6 +93,11 @@ namespace Source.Scripts.BotLogic.Bots
                 Gizmos.DrawLine(previousPoint, _patrolPoints[i].Point.position);
                 previousPoint = _patrolPoints[i].Point.position;
 
+                if (_isNeedShowPointNames == false)
+                {
+                    continue;
+                }
+                
                 GUIStyle style = new GUIStyle();
                 style.normal.textColor = Color.white;
                 style.alignment = TextAnchor.MiddleCenter;

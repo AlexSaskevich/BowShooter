@@ -15,7 +15,7 @@ namespace Source.Scripts.BotLogic.Bots.Components
 
         public void Perform(Vector3 direction)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            Quaternion targetRotation = Quaternion.Euler(0f, Quaternion.LookRotation(direction).eulerAngles.y, 0f);
             _movable.rotation = Quaternion.Slerp(_movable.rotation, targetRotation, Time.deltaTime * _speed);
         }
     }

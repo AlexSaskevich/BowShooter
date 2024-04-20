@@ -3,6 +3,7 @@ using Source.Scripts.BotLogic.Bots.Components;
 using Source.Scripts.BotLogic.Infrastructure.Actions;
 using Source.Scripts.BotLogic.Utils;
 using UnityEngine;
+using Animation = Source.Scripts.AnimationSystem.Animation;
 
 namespace Source.Scripts.BotLogic.Bots.Actions.Patrolling
 {
@@ -13,16 +14,20 @@ namespace Source.Scripts.BotLogic.Bots.Actions.Patrolling
         private readonly PatrolPoint[] _patrolPoints;
         private readonly Transform _movable;
         private readonly NavMeshPathCalculator _navMeshPathCalculator = new();
+        private readonly Animation _animation;
 
         private Transform _currentPoint;
         private int _lastIndex;
         private float _waitTime;
         private float _lastTimeReachedPosition;
 
+        private int _speedHash = Animator.StringToHash("Speed");
+
         public Patrolling(Bot bot, PatrolPoint[] patrolPoints)
         {
             _movement = bot.ComponentContainer.GetComponent<Movement>();
             _rotation = bot.ComponentContainer.GetComponent<Rotation>();
+            _animation = bot.ComponentContainer.GetComponent<Animation>();
             _movable = bot.transform;
             _currentPoint = _movable;
             _patrolPoints = patrolPoints;
@@ -39,9 +44,15 @@ namespace Source.Scripts.BotLogic.Bots.Actions.Patrolling
         {
             Vector3 startPosition = _movable.transform.position;
             Vector3 targetPosition = _currentPoint.position;
+            Vector3 directionToNextPoint =
+                _navMeshPathCalculator.GetDirectionToNextPoint(startPosition, targetPosition);
+
+            _animation.SetFloat(_speedHash,  Mathf.Clamp01(_movement.NormalizedSpeed));
 
             if (Vector3.Distance(startPosition, targetPosition) <= 0.1f)
             {
+                _rotation.Perform(_patrolPoints[GetNextPatrolPointIndex()].Point.position - startPosition);
+
                 if (IsWaitingTimeOver())
                 {
                     ChangePatrolPoint();
@@ -51,8 +62,8 @@ namespace Source.Scripts.BotLogic.Bots.Actions.Patrolling
             }
             else
             {
-                _rotation.Perform(targetPosition - startPosition);
-                _movement.Perform(_navMeshPathCalculator.GetDirectionToNextPoint(startPosition, targetPosition));
+                _rotation.Perform(directionToNextPoint);
+                _movement.Perform(directionToNextPoint);
             }
 
             return TaskStatus.Running;
@@ -60,12 +71,14 @@ namespace Source.Scripts.BotLogic.Bots.Actions.Patrolling
 
         private void ChangePatrolPoint()
         {
-            _lastIndex = (_lastIndex + 1) % _patrolPoints.Length;
+            _lastIndex = GetNextPatrolPointIndex();
             PatrolPoint patrolPoint = _patrolPoints[_lastIndex];
             _currentPoint = patrolPoint.Point;
             _waitTime = patrolPoint.WaitTime;
             _lastTimeReachedPosition = Time.time;
         }
+
+        private int GetNextPatrolPointIndex() => (_lastIndex + 1) % _patrolPoints.Length;
 
         private bool IsWaitingTimeOver() => Time.time - _lastTimeReachedPosition >= _waitTime;
     }
