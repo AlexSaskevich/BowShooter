@@ -21,14 +21,17 @@ namespace Source.Scripts.Weapon.Bow
         private InputReader _inputReader;
         private float _currentTension;
         private Vector3 _targetPosition;
+        private Animation _playerAnimation;
+        private Animator _playerAnimator;
 
         [Inject]
-        private void Inject(InputReader inputReader, Camera playerCamera)
+        private void Inject(InputReader inputReader, Camera playerCamera, Animator playerAnimator)
         {
             _inputReader = inputReader;
             _playerCamera = playerCamera;
             _bow = new Bow();
             _bowView = new BowView(new Animation(_animator));
+            _playerAnimation = new Animation(playerAnimator);
             _arrow.Load(_arrowPoint);
         }
 
@@ -102,11 +105,13 @@ namespace Source.Scripts.Weapon.Bow
         private void OnStretched(float tension)
         {
             _bowView.PullBowstring(tension);
+            _playerAnimation.SetFloat(Animator.StringToHash(nameof(Tension)), tension);
         }
 
         private void OnShoot()
         {
             _bowView.ReleaseBowstring();
+            _playerAnimation.SetFloat(Animator.StringToHash(nameof(Tension)), 0);
         }
     }
 }

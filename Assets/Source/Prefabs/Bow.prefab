@@ -31,7 +31,7 @@ Transform:
   - {fileID: 6760601856146971976}
   m_Father: {fileID: 4846307988365941843}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -20.171476, y: 0.00000031639263, z: 0.000007695531}
+  m_LocalEulerAnglesHint: {x: -20.577261, y: 0.0000002741979, z: 0.00000750737}
 --- !u!1 &405097964951076475
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +160,7 @@ Transform:
   - {fileID: 1854719933513411993}
   m_Father: {fileID: 3410646848291672795}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -20.171585, y: -179.9995, z: -0.00016154256}
+  m_LocalEulerAnglesHint: {x: -20.577404, y: -179.99951, z: -0.00014943762}
 --- !u!1 &1181317507362549753
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 785832474856579249}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -21.855843, y: -0.0004088453, z: 0.0000038908106}
+  m_LocalEulerAnglesHint: {x: -22.303463, y: -0.00040865605, z: 0.000004026813}
 --- !u!1 &3067928571596841345
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +310,7 @@ Transform:
   - {fileID: 8244327311988548564}
   m_Father: {fileID: 8536460538294461619}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0.000007688591, y: -90.13965, z: -179.99998}
+  m_LocalEulerAnglesHint: {x: 0.00000768859, y: -90.13965, z: -179.99998}
 --- !u!1 &3480971368710056731
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,7 +342,7 @@ Transform:
   - {fileID: 785832474856579249}
   m_Father: {fileID: 8536025869709052818}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 19.992441, y: -0.000097526005, z: -0.000024216262}
+  m_LocalEulerAnglesHint: {x: 20.443462, y: -0.00009785404, z: -0.000022886647}
 --- !u!1 &3651693297432498441
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,7 +374,7 @@ Transform:
   - {fileID: 4846307988365941843}
   m_Father: {fileID: 8536460538294461619}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -80.401924, y: -0.00011352383, z: -179.9999}
+  m_LocalEulerAnglesHint: {x: -80.88292, y: -0.00011955868, z: -179.9999}
 --- !u!1 &3729585225286981716
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,7 +473,7 @@ Transform:
   m_Children:
   - {fileID: 921595035777320349}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3316296677528704413
 MonoBehaviour:
@@ -529,7 +529,7 @@ Transform:
   - {fileID: 8536370188634410856}
   m_Father: {fileID: 3206685915699109250}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -19.992395, y: -0.000028358272, z: 0.0000050528097}
+  m_LocalEulerAnglesHint: {x: -20.443419, y: -0.000028239065, z: 0.0000050920844}
 --- !u!1 &7493258235968782471
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,7 +592,7 @@ Transform:
   - {fileID: 3410646848291672795}
   m_Father: {fileID: 8536460538294461619}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 80.40203, y: -0.00023566742, z: 179.9998}
+  m_LocalEulerAnglesHint: {x: 80.88309, y: -0.00023627204, z: 179.9998}
 --- !u!1 &7823675204747461391
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +623,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8536370188634410856}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -21.855764, y: -0.0000011857875, z: 0.0000018001051}
+  m_LocalEulerAnglesHint: {x: -22.303354, y: -0.0000012605824, z: 0.0000017802552}
 --- !u!1 &7839939524143512328
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,16 +664,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5663875163254196056}
     m_Modifications:
-    - target: {fileID: 3295532078552615329, guid: 673e0a1770007484f91caaab7891dc7f,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4876240412696676415, guid: 673e0a1770007484f91caaab7891dc7f,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 6742408105416783426, guid: 673e0a1770007484f91caaab7891dc7f,
         type: 3}
       propertyPath: m_RootOrder
@@ -733,11 +723,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Arrow
-      objectReference: {fileID: 0}
-    - target: {fileID: 8146868315487755468, guid: 673e0a1770007484f91caaab7891dc7f,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

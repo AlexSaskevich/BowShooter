@@ -10,6 +10,7 @@ namespace Source.Scripts.PlayerEntity
     public class PlayerInstaller : MonoBehaviour, IInstaller
     {
         [SerializeField] private Player _player;
+        [SerializeField] private Animator _playerAnimator;
         [SerializeField] private Transform _playerTransform;
         [SerializeField] private Rigidbody _playerRigidbody;
         [SerializeField] private Collider _playerCollider;
@@ -43,7 +44,8 @@ namespace Source.Scripts.PlayerEntity
                 .AddSingleton(componentContainer, typeof(IComponentContainer))
                 .AddSingleton(inputReader)
                 .AddSingleton(_player)
-                .AddSingleton(_playerCamera);
+                .AddSingleton(_playerCamera)
+                .AddSingleton(_playerAnimator);
         }
     }
 }
