@@ -30,6 +30,13 @@
       "dependencies": {},
       "hash": "0e6c8ca13c9ad1632977696cfbec43efd930b028"
     },
+    "com.madsbangh.easybuttons": {
+      "version": "https://github.com/madsbangh/EasyButtons.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "73d2383899210da808a1b27329cdaa8000de557b"
+    },
     "com.unity.ai.navigation": {
       "version": "1.1.5",
       "depth": 0,
