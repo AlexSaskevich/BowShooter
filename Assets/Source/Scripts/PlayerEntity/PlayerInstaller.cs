@@ -9,9 +9,11 @@ namespace Source.Scripts.PlayerEntity
 {
     public class PlayerInstaller : MonoBehaviour, IInstaller
     {
+        [SerializeField] private Player _player;
         [SerializeField] private Transform _playerTransform;
         [SerializeField] private Rigidbody _playerRigidbody;
         [SerializeField] private Collider _playerCollider;
+        [SerializeField] private Camera _playerCamera;
         [SerializeField] private Transform _cameraControls;
         [SerializeField] private CameraMouseInputParameters _cameraMouseInputParameters;
         [SerializeField] private FollowingToTargetParameters _followingToTargetParameters;
@@ -39,10 +41,9 @@ namespace Source.Scripts.PlayerEntity
 
             containerBuilder
                 .AddSingleton(componentContainer, typeof(IComponentContainer))
-                .AddSingleton(playerMovement)
-                .AddSingleton(mover)
                 .AddSingleton(inputReader)
-                .AddSingleton(FindObjectOfType<Player>());
+                .AddSingleton(_player)
+                .AddSingleton(_playerCamera);
         }
     }
 }

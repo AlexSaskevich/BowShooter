@@ -1,27 +1,27 @@
-﻿using System;
+﻿using Source.Scripts.Weapon.Bow.TensionLogic;
 using UnityEngine;
+using Animation = Source.Scripts.AnimationSystem.Animation;
 
 namespace Source.Scripts.Weapon.Bow
 {
-    [Serializable]
     public class BowView
     {
-        [SerializeField] private BowstringAnimation _animation;
-        [SerializeField] private Transform _bowstring;
-        [SerializeField] private float _defaultY;
-        [SerializeField] private float _maxY;
+        private readonly Animation _animation;
+        private readonly int _tensionHash = Animator.StringToHash(nameof(Tension));
+
+        public BowView(Animation animation)
+        {
+            _animation = animation;
+        }
 
         public void PullBowstring(float tension)
         {
-            float targetValue = Mathf.Lerp(_defaultY, _maxY, tension);
-            Vector3 bowstringLocalPosition = _bowstring.localPosition;
-            bowstringLocalPosition.y = targetValue;
-            _bowstring.localPosition = bowstringLocalPosition;
+            _animation.SetFloat(_tensionHash, tension);
         }
 
         public void ReleaseBowstring()
         {
-            _animation.PlayReleaseBowstringAnimation(_bowstring, _defaultY);
+            _animation.SetFloat(_tensionHash, 0);
         }
     }
 }

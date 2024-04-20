@@ -7,26 +7,26 @@ namespace Source.Scripts.Weapon.Arrows
     public class Arrow
     {
         [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private Transform _arrowTransform;
         [SerializeField] private ArrowTorque _arrowTorque;
 
+        [field: SerializeField] public Transform ArrowTransform { get; private set; }
         [field: SerializeField] public float Speed { get; private set; }
 
         public void Load(Transform parent)
         {
-            _arrowTransform.parent = parent;
-            _arrowTransform.localPosition = Vector3.zero;
-            _arrowTransform.localRotation = Quaternion.Euler(new Vector3(90, 0, 0));
+            ArrowTransform.parent = parent;
+            ArrowTransform.localPosition = Vector3.zero;
+            ArrowTransform.localRotation = Quaternion.Euler(new Vector3(90, 0, 0));
             _rigidbody.isKinematic = true;
             _arrowTorque.StopAddTorque();
         }
 
-        public void Fly(float velocity)
+        public void Fly(Vector3 direction, float velocity)
         {
-            _arrowTransform.parent = null;
+            ArrowTransform.parent = null;
             _rigidbody.isKinematic = false;
-            _rigidbody.velocity = _arrowTransform.forward * velocity;
-            _arrowTorque.StartAddTorque(_rigidbody, _arrowTransform);
+            _rigidbody.velocity = direction * velocity;
+            _arrowTorque.StartAddTorque(_rigidbody, ArrowTransform);
         }
     }
 }
