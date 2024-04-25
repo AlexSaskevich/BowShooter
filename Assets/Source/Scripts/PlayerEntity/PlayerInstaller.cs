@@ -1,5 +1,6 @@
 ﻿using Reflex.Core;
 using Source.Scripts.CameraSystem;
+using Source.Scripts.HealthSystem;
 using Source.Scripts.Infrastructure;
 using Source.Scripts.Input;
 using Source.Scripts.MovementSystem;
@@ -31,6 +32,7 @@ namespace Source.Scripts.PlayerEntity
             PlayerMovement playerMovement = new(inputReader, mover, _playerTransform, _playerMovementParameters,
                 _cameraControls);
             CameraRotation cameraRotation = new(inputReader, _cameraControls, _cameraRotationParameters);
+            IHealth health = new Health(100, 100);
 
             ComponentContainer componentContainer = new();
 
@@ -38,7 +40,8 @@ namespace Source.Scripts.PlayerEntity
                 .AddComponent(followingToTarget)
                 .AddComponent(cameraRotation)
                 .AddComponent(mover)
-                .AddComponent(playerMovement);
+                .AddComponent(playerMovement)
+                .AddComponent(health);
 
             containerBuilder
                 .AddSingleton(componentContainer, typeof(IComponentContainer))

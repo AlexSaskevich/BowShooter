@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Source.Scripts.PlayerEntity
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IEntity
     {
         private CameraRotation _cameraRotation;
         private FollowingToTarget _followingToTarget;
@@ -38,7 +38,7 @@ namespace Source.Scripts.PlayerEntity
             {
                 _followingToTarget.SmoothUpdate();
             }
-            
+
             _playerMovement.HandleJumpKeyInput();
         }
 

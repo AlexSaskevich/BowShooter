@@ -9,6 +9,7 @@ using Source.Scripts.BotLogic.Bots.Conditions;
 using Source.Scripts.BotLogic.Infrastructure;
 using Source.Scripts.BotLogic.Infrastructure.Actions;
 using Source.Scripts.BotLogic.Infrastructure.Conditions;
+using Source.Scripts.HealthSystem;
 using Source.Scripts.Infrastructure;
 using Source.Scripts.PlayerEntity;
 using UnityEditor;
@@ -17,7 +18,7 @@ using Animation = Source.Scripts.AnimationSystem.Animation;
 
 namespace Source.Scripts.BotLogic.Bots
 {
-    public class Bot : MonoBehaviour
+    public class Bot : MonoBehaviour, IEntity
     {
         [SerializeField] private Animator _animator;
         [SerializeField] private CharacterController _characterController;
@@ -39,11 +40,12 @@ namespace Source.Scripts.BotLogic.Bots
             Movement movement = new(_characterController);
             Rotation rotation = new(transform);
             Animation animation = new(_animator);
-
+            IHealth health = new Health(100, 100);
             ComponentContainer
                 .AddComponent(movement)
                 .AddComponent(rotation)
-                .AddComponent(animation);
+                .AddComponent(animation)
+                .AddComponent(health);
 
             IsTargetNearby isTargetNearby = new(player.transform, transform, distance: 4f);
             Container<ICondition> conditionsContainer = new(new ICondition[] { isTargetNearby });
@@ -97,7 +99,7 @@ namespace Source.Scripts.BotLogic.Bots
                 {
                     continue;
                 }
-                
+
                 GUIStyle style = new GUIStyle();
                 style.normal.textColor = Color.white;
                 style.alignment = TextAnchor.MiddleCenter;
