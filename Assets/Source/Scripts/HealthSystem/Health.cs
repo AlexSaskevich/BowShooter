@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Source.Scripts.HealthSystem
 {
-    public class Health : IHealth
+    public class Health : IHealth, IDamageable
     {
         public Health(float currentValue, float defaultValue)
         {
@@ -31,7 +31,7 @@ namespace Source.Scripts.HealthSystem
 
         private void Die()
         {
-            Debug.LogError($"Dead");
+            Debug.LogError("Dead");
         }
     }
 }

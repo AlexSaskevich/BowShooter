@@ -2,11 +2,11 @@
 
 namespace Source.Scripts.AnimationSystem
 {
-    public class Animation
+    public abstract class Animation
     {
         private readonly Animator _animator;
 
-        public Animation(Animator animator)
+        protected Animation(Animator animator)
         {
             _animator = animator;
         }

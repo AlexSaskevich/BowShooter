@@ -1,5 +1,7 @@
 ﻿using Reflex.Attributes;
+using Source.Scripts.BotEntity.Bots.Components;
 using Source.Scripts.Input;
+using Source.Scripts.PlayerEntity.Components;
 using Source.Scripts.Weapon.Arrows;
 using Source.Scripts.Weapon.Bow.TensionLogic;
 using UnityEngine;
@@ -30,8 +32,8 @@ namespace Source.Scripts.Weapon.Bow
             _inputReader = inputReader;
             _playerCamera = playerCamera;
             _bow = new Bow();
-            _bowView = new BowView(new Animation(_animator));
-            _playerAnimation = new Animation(playerAnimator);
+            _bowView = new BowView(new BotAnimation(_animator));
+            _playerAnimation = new PlayerAnimation(playerAnimator);
             _arrow.Load(_arrowPoint);
         }
 
