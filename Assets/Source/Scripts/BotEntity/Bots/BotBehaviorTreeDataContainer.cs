@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using Source.Scripts.BotEntity.Bots.Actions;
 using Source.Scripts.BotEntity.Bots.Actions.Patrolling;
 using Source.Scripts.BotEntity.Bots.Conditions;
 using Source.Scripts.BotEntity.Infrastructure.Actions;
@@ -15,55 +14,30 @@ namespace Source.Scripts.BotEntity.Bots
     [Serializable]
     public class BotBehaviorTreeDataContainer : BehaviorTreeDataContainer
     {
-        [SerializeField] public PatrolPointsHelper _patrolPointsHelper;
+        [SerializeField] private PatrolPointsHelper _patrolPointsHelper;
 
         public Container<ICondition> GetPatrollingConditionsContainer(IComponentContainer componentContainer)
         {
-            ICondition isAlive = new IsAlive(componentContainer.GetComponent<IHealth>());
-            return new Container<ICondition>(
-                new ReadOnlyCollection<ICondition>(new List<ICondition> { isAlive }));
+            ICondition isAlive = new IsAlive(componentContainer.GetComponent<Health>());
+            return CreateConditionContainer(isAlive);
         }
 
         public Container<IAction> GetPatrollingActionsContainer(IComponentContainer componentContainer)
         {
             IAction patrolling = new Patrolling(componentContainer, _patrolPointsHelper.GetPatrolPoints());
-            return new Container<IAction>(new ReadOnlyCollection<IAction>(new List<IAction> { patrolling }));
+            return CreateActionContainer(patrolling);
         }
 
-        public Container<ICondition> GetFollowingConditionsContainer()
+        public Container<ICondition> GetDeadConditionsContainer(IComponentContainer componentContainer)
         {
-            List<ICondition> conditions = new() { };
-            return new Container<ICondition>(new ReadOnlyCollection<ICondition>(conditions));
+            ICondition isDead = new IsDead(componentContainer.GetComponent<Health>());
+            return CreateConditionContainer(isDead);
         }
 
-        public Container<IAction> GetFollowingActionsContainer()
+        public Container<IAction> GetDeadActionsContainer(IComponentContainer componentContainer)
         {
-            List<IAction> actions = new() { };
-            return new Container<IAction>(new ReadOnlyCollection<IAction>(actions));
-        }
-
-        public Container<ICondition> GetDeathConditionsContainer()
-        {
-            List<ICondition> conditions = new() { };
-            return new Container<ICondition>(new ReadOnlyCollection<ICondition>(conditions));
-        }
-
-        public Container<IAction> GetDeathActionsContainer()
-        {
-            List<IAction> actions = new() { };
-            return new Container<IAction>(new ReadOnlyCollection<IAction>(actions));
-        }
-
-        public Container<ICondition> GetAttackConditionsContainer()
-        {
-            List<ICondition> conditions = new() { };
-            return new Container<ICondition>(new ReadOnlyCollection<ICondition>(conditions));
-        }
-
-        public Container<IAction> GetAttackActionsContainer()
-        {
-            List<IAction> actions = new() { };
-            return new Container<IAction>(new ReadOnlyCollection<IAction>(actions));
+            IAction die = new Die(componentContainer);
+            return CreateActionContainer(die);
         }
     }
 }

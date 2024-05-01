@@ -1,8 +1,5 @@
 using BehaviorDesigner.Runtime;
 using Source.Scripts.BotEntity.Bots.Components;
-using Source.Scripts.BotEntity.Infrastructure.Actions;
-using Source.Scripts.BotEntity.Infrastructure.Conditions;
-using Source.Scripts.BotEntity.Infrastructure.Containers;
 using Source.Scripts.HealthSystem;
 using Source.Scripts.Infrastructure;
 using UnityEngine;
@@ -20,7 +17,9 @@ namespace Source.Scripts.BotEntity.Bots
         private void Start()
         {
             IComponentContainer componentContainer = CreateComponentContainer();
-            InitBehaviorTree(componentContainer);
+            _bot.Init(componentContainer);
+            BotBehaviorTreeInitializer botBehaviorTreeInitializer = new(_behaviorTree, _botBehaviorTreeDataContainer);
+            botBehaviorTreeInitializer.InitBehaviorTree(componentContainer);
         }
 
         private IComponentContainer CreateComponentContainer()
@@ -29,7 +28,7 @@ namespace Source.Scripts.BotEntity.Bots
             Movement movement = new(_characterController);
             Rotation rotation = new(_bot.transform);
             BotAnimation animation = new(_animator);
-            IHealth health = new Health(100, 100);
+            Health health = new(100, 100);
             componentContainer
                 .AddComponent(movement)
                 .AddComponent(rotation)
@@ -37,22 +36,6 @@ namespace Source.Scripts.BotEntity.Bots
                 .AddComponent(health);
 
             return componentContainer;
-        }
-
-        private void InitBehaviorTree(IComponentContainer componentContainer)
-        {
-            InitSequence("CanPatrolling",
-                _botBehaviorTreeDataContainer.GetPatrollingConditionsContainer(componentContainer),
-                "PatrollingActions", _botBehaviorTreeDataContainer.GetPatrollingActionsContainer(componentContainer));
-            _behaviorTree.EnableBehavior();
-        }
-
-        private void InitSequence(string conditionsVariable, Container<ICondition> conditionsContainer,
-            string actionsVariable, Container<IAction> actionsContainer)
-        {
-            _behaviorTree.SetVariable(conditionsVariable,
-                new SharedConditionsContainer { Value = conditionsContainer });
-            _behaviorTree.SetVariable(actionsVariable, new SharedActionsContainer { Value = actionsContainer });
         }
     }
 }

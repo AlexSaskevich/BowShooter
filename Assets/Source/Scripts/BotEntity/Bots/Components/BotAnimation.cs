@@ -5,7 +5,8 @@ namespace Source.Scripts.BotEntity.Bots.Components
 {
     public class BotAnimation : Animation
     {
-        public readonly int SpeedHash = Animator.StringToHash("Speed");
+        public int SpeedHash { get; private set; } = Animator.StringToHash("Speed");
+        public int DieHash { get; private set; } = Animator.StringToHash("Die");
 
         public BotAnimation(Animator animator) : base(animator)
         {
