@@ -6,6 +6,7 @@ using Source.Scripts.BotEntity.Bots.Conditions;
 using Source.Scripts.BotEntity.Infrastructure.Actions;
 using Source.Scripts.BotEntity.Infrastructure.Conditions;
 using Source.Scripts.BotEntity.Infrastructure.Containers;
+using Source.Scripts.HealthSystem;
 using Source.Scripts.Infrastructure;
 using UnityEngine;
 
@@ -18,9 +19,9 @@ namespace Source.Scripts.BotEntity.Bots
 
         public Container<ICondition> GetPatrollingConditionsContainer(IComponentContainer componentContainer)
         {
-            ICondition isTrue = new IsTrue();
+            ICondition isAlive = new IsAlive(componentContainer.GetComponent<IHealth>());
             return new Container<ICondition>(
-                new ReadOnlyCollection<ICondition>(new List<ICondition> { isTrue }));
+                new ReadOnlyCollection<ICondition>(new List<ICondition> { isAlive }));
         }
 
         public Container<IAction> GetPatrollingActionsContainer(IComponentContainer componentContainer)
