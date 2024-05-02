@@ -1,12 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Source.Scripts.Weapon.Arrows
+namespace Source.Scripts.Weapon.Projectiles.Arrows
 {
-    [Serializable]
-    public class Arrow
+    public class Arrow : Projectile
     {
-        [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private ArrowTorque _arrowTorque;
 
         [field: SerializeField] public Transform ArrowTransform { get; private set; }
@@ -17,16 +14,16 @@ namespace Source.Scripts.Weapon.Arrows
             ArrowTransform.parent = parent;
             ArrowTransform.localPosition = Vector3.zero;
             ArrowTransform.localRotation = Quaternion.Euler(new Vector3(90, 0, 0));
-            _rigidbody.isKinematic = true;
+            Rigidbody.isKinematic = true;
             _arrowTorque.StopAddTorque();
         }
 
         public void Fly(Vector3 direction, float velocity)
         {
             ArrowTransform.parent = null;
-            _rigidbody.isKinematic = false;
-            _rigidbody.velocity = direction * velocity;
-            _arrowTorque.StartAddTorque(_rigidbody, ArrowTransform);
+            Rigidbody.isKinematic = false;
+            Rigidbody.velocity = direction * velocity;
+            _arrowTorque.StartAddTorque(Rigidbody, ArrowTransform);
         }
     }
 }

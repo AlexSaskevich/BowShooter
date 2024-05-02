@@ -149,6 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6742408105416783426}
   - component: {fileID: 8851104974855644432}
+  - component: {fileID: 3307004931086564603}
   m_Layer: 6
   m_Name: Arrow
   m_TagString: Untagged
@@ -199,3 +200,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &3307004931086564603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8146868315487755468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b25a501d37484c1ca9fc9a6793516cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Rigidbody: {fileID: 8851104974855644432}
+  <Damage>k__BackingField: 999
+  <ProjectileDisposeType>k__BackingField: 1
+  <IsNeedSpawnVFXOnDestroy>k__BackingField: 0
+  <DestroyVFX>k__BackingField: {fileID: 0}
+  <ColliderForCollisionDetection>k__BackingField: {fileID: 9136137991984218209}
+  _arrowTorque:
+    <Velocity>k__BackingField: 5
+    <AngularVelocityFactor>k__BackingField: 0.5
+  <ArrowTransform>k__BackingField: {fileID: 6742408105416783426}
+  <Speed>k__BackingField: 60

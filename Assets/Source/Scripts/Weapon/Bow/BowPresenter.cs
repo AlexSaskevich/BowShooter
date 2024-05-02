@@ -2,8 +2,8 @@
 using Source.Scripts.BotEntity.Bots.Components;
 using Source.Scripts.Input;
 using Source.Scripts.PlayerEntity.Components;
-using Source.Scripts.Weapon.Arrows;
 using Source.Scripts.Weapon.Bow.TensionLogic;
+using Source.Scripts.Weapon.Projectiles.Arrows;
 using UnityEngine;
 using Animation = Source.Scripts.AnimationSystem.Animation;
 

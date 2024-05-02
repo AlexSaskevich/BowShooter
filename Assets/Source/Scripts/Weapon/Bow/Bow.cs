@@ -3,14 +3,14 @@ using Source.Scripts.Weapon.Bow.TensionLogic;
 
 namespace Source.Scripts.Weapon.Bow
 {
-    public class Bow : IShootable
+    public class Bow
     {
         private const float MinTension = 0;
         private const float MaxTension = 1;
 
         public event Action<float> Stretched;
         public event Action Shoot;
-       
+
         public Tension Tension { get; } = new(MinTension, MaxTension);
 
         public void SetTension(float tension)

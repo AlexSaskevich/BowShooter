@@ -2,7 +2,7 @@
 using R3;
 using UnityEngine;
 
-namespace Source.Scripts.Weapon.Arrows
+namespace Source.Scripts.Weapon.Projectiles.Arrows
 {
     [Serializable]
     public class ArrowTorque
