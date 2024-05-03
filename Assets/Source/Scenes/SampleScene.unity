@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028373, g: 0.22571398, b: 0.30692294, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -16258,6 +16258,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 819460182710959730, guid: 831129789fa374405a4b7d2a21e8f082,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5989695979619263177, guid: 831129789fa374405a4b7d2a21e8f082,
         type: 3}
       propertyPath: m_Name
@@ -16317,6 +16322,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909699437832073218, guid: 831129789fa374405a4b7d2a21e8f082,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909699437832073218, guid: 831129789fa374405a4b7d2a21e8f082,
+        type: 3}
+      propertyPath: gizmoViewMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909699437832073218, guid: 831129789fa374405a4b7d2a21e8f082,
+        type: 3}
+      propertyPath: showBehaviorDesignerGizmo
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985793970252212212, guid: 831129789fa374405a4b7d2a21e8f082,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
