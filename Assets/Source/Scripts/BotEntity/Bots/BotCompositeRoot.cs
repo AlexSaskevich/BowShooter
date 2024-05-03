@@ -29,11 +29,13 @@ namespace Source.Scripts.BotEntity.Bots
             Rotation rotation = new(_bot.transform);
             BotAnimation animation = new(_animator);
             Health health = new(100, 100);
+            Ragdoll ragdoll = new(_bot.gameObject);
             componentContainer
                 .AddComponent(movement)
                 .AddComponent(rotation)
                 .AddComponent(animation)
-                .AddComponent(health);
+                .AddComponent(health)
+                .AddComponent(ragdoll);
 
             return componentContainer;
         }
