@@ -8,15 +8,18 @@ namespace Source.Scripts.BotEntity.Bots.Actions
     public class Die : IAction
     {
         private readonly BotAnimation _animation;
+        private readonly Ragdoll _ragdoll;
 
         public Die(IComponentContainer componentContainer)
         {
             _animation = componentContainer.GetComponent<BotAnimation>();
+            _ragdoll = componentContainer.GetComponent<Ragdoll>();
         }
 
         public void OnStart()
         {
-            _animation.SetTrigger(_animation.DieHash);
+            _animation.Disable();
+            _ragdoll.Enable();
         }
 
         public TaskStatus ExecuteAction()

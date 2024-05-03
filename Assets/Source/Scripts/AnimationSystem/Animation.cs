@@ -14,5 +14,7 @@ namespace Source.Scripts.AnimationSystem
         public void SetFloat(int hash, float value) => _animator.SetFloat(hash, value);
 
         public void SetTrigger(int hash) => _animator.SetTrigger(hash);
+
+        public void Disable() => _animator.enabled = false;
     }
 }
