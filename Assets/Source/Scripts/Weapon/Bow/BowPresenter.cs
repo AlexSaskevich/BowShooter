@@ -53,7 +53,7 @@ namespace Source.Scripts.Weapon.Bow
                     ? raycastHit.point
                     : ray.GetPoint(100);
 
-                if (UnityEngine.Input.GetMouseButtonDown(1))
+                if (_inputReader.IsReloadButtonWaPressed)
                 {
                     _bow.ResetTension();
                     _currentTension = 0;
