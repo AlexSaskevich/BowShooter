@@ -5,13 +5,11 @@ namespace Source.Scripts.BotEntity.Bots.Components
 {
     public class Ragdoll
     {
-        private readonly GameObject _target;
         private readonly List<Rigidbody> _rigidbodies;
 
         public Ragdoll(GameObject target)
         {
-            _target = target;
-            _rigidbodies = new List<Rigidbody>(_target.GetComponentsInChildren<Rigidbody>());
+            _rigidbodies = new List<Rigidbody>(target.GetComponentsInChildren<Rigidbody>());
             Disable();
         }
 

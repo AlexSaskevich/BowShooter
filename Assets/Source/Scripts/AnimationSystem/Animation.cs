@@ -16,5 +16,7 @@ namespace Source.Scripts.AnimationSystem
         public void SetTrigger(int hash) => _animator.SetTrigger(hash);
 
         public void Disable() => _animator.enabled = false;
+
+        public void Enable() => _animator.enabled = true;
     }
 }
