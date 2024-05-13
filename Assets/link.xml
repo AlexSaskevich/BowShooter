@@ -1,0 +1,11 @@
+<linker>
+    <assembly fullname="Assembly-CSharp">
+        <type fullname="BehaviorDesigner.Runtime.Tasks.Selector" preserve="all"/>
+        <type fullname="BehaviorDesigner.Runtime.Tasks.Sequence" preserve="all"/>
+        <type fullname="BehaviorDesigner.Runtime.Tasks.Repeater" preserve="all"/>
+        <type fullname="BehaviorDesigner.Runtime.Tasks.Idle" preserve="all"/>
+        <type fullname="BehaviorDesigner.Runtime.Tasks.ParallelComplete" preserve="all"/>
+        <type fullname="Source.Scripts.BotEntity.Infrastructure.Actions.PerformingActionsSequence" preserve="all"/>
+        <type fullname="Source.Scripts.BotEntity.Infrastructure.Conditions.PerformingConditions" preserve="all"/>
+    </assembly>
+</linker>

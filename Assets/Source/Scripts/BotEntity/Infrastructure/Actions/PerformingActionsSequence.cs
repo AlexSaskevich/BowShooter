@@ -1,7 +1,6 @@
 using BehaviorDesigner.Runtime.Tasks;
-using Source.Scripts.BotEntity.Infrastructure.Actions;
 
-namespace Source.Scripts.BotEntity.Infrastructure.Conditions
+namespace Source.Scripts.BotEntity.Infrastructure.Actions
 {
     public class PerformingActionsSequence : Action
     {
