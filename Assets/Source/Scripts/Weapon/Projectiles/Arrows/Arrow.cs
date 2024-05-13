@@ -12,8 +12,8 @@ namespace Source.Scripts.Weapon.Projectiles.Arrows
         public void Load(Transform parent)
         {
             ArrowTransform.parent = parent;
-            ArrowTransform.localPosition = Vector3.zero;
-            ArrowTransform.localRotation = Quaternion.Euler(new Vector3(90, 0, 0));
+            ArrowTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(new Vector3(90, 0, 0)));
+            ArrowTransform.localScale = Vector3.one;
             Rigidbody.isKinematic = true;
             _arrowTorque.StopAddTorque();
         }

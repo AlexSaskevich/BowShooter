@@ -5811,6 +5811,7 @@ MonoBehaviour:
     <CameraSpeed>k__BackingField: 10
     <SmoothCameraRotation>k__BackingField: 0
     <CameraSmoothingFactor>k__BackingField: 25
+  _bow: {fileID: 9102171471048823521}
 --- !u!1001 &536106218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23355,3 +23356,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9465bed1361a58749af355cd1dac894f, type: 3}
+--- !u!114 &9102171471048823521 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8294612907726520467, guid: 9465bed1361a58749af355cd1dac894f,
+    type: 3}
+  m_PrefabInstance: {fileID: 9102171471048823513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18919ba8728a4f1bbd7ae83ccb99689d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -32,7 +32,7 @@ namespace Source.Scripts.Input
 
         public bool IsFireButtonPressed => _characterInput.Player.Fire.IsPressed();
 
-        public bool IsReloadButtonWaPressed => _characterInput.Player.Reload.WasPressedThisFrame();
+        public bool IsReloadButtonWasPressed => _characterInput.Player.Reload.WasPressedThisFrame();
 
         public bool IsFireButtonWasReleased => _characterInput.Player.Fire.WasReleasedThisFrame();
 

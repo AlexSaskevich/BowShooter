@@ -4,7 +4,10 @@ using Source.Scripts.HealthSystem;
 using Source.Scripts.Infrastructure;
 using Source.Scripts.Input;
 using Source.Scripts.MovementSystem;
+using Source.Scripts.PlayerEntity.Components;
+using Source.Scripts.Weapon.Bow;
 using UnityEngine;
+using Animation = Source.Scripts.AnimationSystem.Animation;
 
 namespace Source.Scripts.PlayerEntity
 {
@@ -22,6 +25,7 @@ namespace Source.Scripts.PlayerEntity
         [SerializeField] private MoverParameters _moverParameters;
         [SerializeField] private PlayerMovementParameters _playerMovementParameters;
         [SerializeField] private CameraRotationParameters _cameraRotationParameters;
+        [SerializeField] private Bow _bow;
 
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
@@ -33,6 +37,9 @@ namespace Source.Scripts.PlayerEntity
                 _cameraControls);
             CameraRotation cameraRotation = new(inputReader, _cameraControls, _cameraRotationParameters);
             IHealth health = new Health(100, 100);
+            Animation animation = new PlayerAnimation(_playerAnimator);
+            _bow.Init(inputReader, _playerCamera);
+            Attack attack = new(animation, _bow);
 
             ComponentContainer componentContainer = new();
 
