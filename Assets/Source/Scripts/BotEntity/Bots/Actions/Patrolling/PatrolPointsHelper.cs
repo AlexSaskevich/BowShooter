@@ -16,6 +16,7 @@ namespace Source.Scripts.BotEntity.Bots.Actions.Patrolling
         {
             return _patrolPoints;
         }
+#if UNITY_EDITOR
 
         [Button]
         private void SetPatrolPoints()
@@ -80,5 +81,6 @@ namespace Source.Scripts.BotEntity.Bots.Actions.Patrolling
                 Gizmos.DrawLine(previousPoint, _patrolPoints.First().Point.position);
             }
         }
+#endif
     }
 }
