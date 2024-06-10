@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Source.Scripts.Weapon.Bow.TensionSystem
+namespace Source.Scripts.Weapon.Bow.Components.TensionSystem
 {
     public class TensionCalculator
     {

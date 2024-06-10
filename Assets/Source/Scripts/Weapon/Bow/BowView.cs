@@ -1,4 +1,4 @@
-﻿using Source.Scripts.Weapon.Bow.TensionSystem;
+﻿using Source.Scripts.Weapon.Bow.Components.TensionSystem;
 using UnityEngine;
 using Animation = Source.Scripts.AnimationSystem.Animation;
 

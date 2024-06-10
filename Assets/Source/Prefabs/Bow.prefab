@@ -490,8 +490,9 @@ MonoBehaviour:
   _animator: {fileID: 5414677814626260598}
   _arrowPrefab: {fileID: 3307004931086564603, guid: 673e0a1770007484f91caaab7891dc7f,
     type: 3}
-  _tensionSpeed: 1
   _arrowPoint: {fileID: 5663875163254196056}
+  <BowConfig>k__BackingField: {fileID: 11400000, guid: fd33c6743ee904eddbfae593495f50f9,
+    type: 2}
 --- !u!1 &6774749979534890658
 GameObject:
   m_ObjectHideFlags: 0

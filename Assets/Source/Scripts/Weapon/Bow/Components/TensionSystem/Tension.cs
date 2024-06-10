@@ -1,18 +1,12 @@
 using System;
 using UnityEngine;
 
-namespace Source.Scripts.Weapon.Bow.TensionSystem
+namespace Source.Scripts.Weapon.Bow.Components.TensionSystem
 {
     public class Tension
     {
-        public Tension(float minValue, float maxValue)
-        {
-            MinValue = minValue;
-            MaxValue = maxValue;
-        }
-
-        public float MinValue { get; private set; }
-        public float MaxValue { get; private set; }
+        public float MinValue { get; private set; } = 0f;
+        public float MaxValue { get; private set; } = 1f;
         public float CurrentValue { get; private set; }
 
         public void Set(float value)

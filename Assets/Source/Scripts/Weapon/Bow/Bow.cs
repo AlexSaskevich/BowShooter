@@ -4,21 +4,16 @@ using Source.Scripts.BotEntity.Bots.Components;
 using Source.Scripts.Infrastructure;
 using Source.Scripts.Input;
 using Source.Scripts.Weapon.Bow.Components;
-using Source.Scripts.Weapon.Bow.TensionSystem;
+using Source.Scripts.Weapon.Bow.Components.TensionSystem;
 using Source.Scripts.Weapon.Projectiles.Arrows;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Source.Scripts.Weapon.Bow
 {
     public class Bow : MonoBehaviour, IEntity
     {
         [SerializeField] private Animator _animator;
-
-        [FormerlySerializedAs("_arrow")] [SerializeField]
-        private Arrow _arrowPrefab;
-
-        [SerializeField] private float _tensionSpeed = 1f;
+        [SerializeField] private Arrow _arrowPrefab;
         [SerializeField] private Transform _arrowPoint;
 
         private InputReader _inputReader;
@@ -31,12 +26,13 @@ namespace Source.Scripts.Weapon.Bow
         public event Action Shoot;
         public event Action<float> Stretched;
 
+        [field: SerializeField] public BowConfig BowConfig { get; private set; }
         public IComponentContainer ComponentContainer { get; private set; }
 
         public void Init(InputReader inputReader, Camera playerCamera)
         {
             _inputReader = inputReader;
-            _tension = new Tension(0, 1);
+            _tension = new Tension();
             _bowView = new BowView(new BotAnimation(_animator));
             SpawnArrow();
             _shooting = new Shooting(playerCamera);
@@ -46,7 +42,8 @@ namespace Source.Scripts.Weapon.Bow
         {
             if (_inputReader.IsFireButtonPressed)
             {
-                _currentTension = TensionCalculator.Calculate(_currentTension, _tension.MaxValue, _tensionSpeed);
+                _currentTension =
+                    TensionCalculator.Calculate(_currentTension, _tension.MaxValue, BowConfig.TensionSpeed);
                 _tension.Set(_currentTension);
                 _bowView.PullBowstring(_currentTension);
                 Stretched?.Invoke(_currentTension);
@@ -55,8 +52,8 @@ namespace Source.Scripts.Weapon.Bow
             {
                 _shooting.Perform(_currentArrow, _currentTension);
                 _bowView.ReleaseBowstring();
-                _tension.Set(0);
-                _currentTension = 0;
+                _tension.Set(_tension.MinValue);
+                _currentTension = _tension.MinValue;
                 SpawnArrow();
                 Shoot?.Invoke();
             }
