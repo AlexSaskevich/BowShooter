@@ -1,13 +1,20 @@
-﻿using UnityEngine;
+﻿using Source.Scripts.Infrastructure;
+using UnityEngine;
 
 namespace Source.Scripts.Weapon.Projectiles.Arrows
 {
     public class Arrow : Projectile
     {
-        [SerializeField] private ArrowTorque _arrowTorque;
+        private ArrowTorque _arrowTorque;
 
         [field: SerializeField] public Transform ArrowTransform { get; private set; }
-        [field: SerializeField] public float Speed { get; private set; }
+
+        public override void Init(IComponentContainer componentContainer)
+        {
+            base.Init(componentContainer);
+
+            _arrowTorque = new ArrowTorque((ArrowConfig)Config);
+        }
 
         public void Load(Transform parent)
         {

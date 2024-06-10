@@ -8,11 +8,11 @@ namespace Source.Scripts.Weapon.Projectiles
     public abstract class Projectile : MonoBehaviour, IEntity
     {
         [field: SerializeField] public Rigidbody Rigidbody;
-        [field: SerializeField] public float Damage { get; private set; }
+        [field: SerializeField] public ProjectileConfig Config { get; private set; }
 
         public IComponentContainer ComponentContainer { get; private set; }
 
-        public void Init(IComponentContainer componentContainer)
+        public virtual void Init(IComponentContainer componentContainer)
         {
             ComponentContainer = componentContainer;
             new EntityDetector(Rigidbody, OnEntityDetected).StartDetect();
@@ -22,7 +22,7 @@ namespace Source.Scripts.Weapon.Projectiles
         {
             if (entity.ComponentContainer.TryGetComponent(out Health health))
             {
-                health.TakeDamage(Damage);
+                health.TakeDamage(Config.Damage);
             }
         }
     }

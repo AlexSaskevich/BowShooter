@@ -101,8 +101,8 @@ namespace Source.Scripts.Weapon.Bow
         private void SpawnArrow()
         {
             _currentArrow = LeanPool.Spawn(BowConfig.DefaultArrow);
-            _currentArrow.Load(_arrowPoint);
             _currentArrow.Init(new ComponentContainer());
+            _currentArrow.Load(_arrowPoint);
         }
 
         private void StopFire()

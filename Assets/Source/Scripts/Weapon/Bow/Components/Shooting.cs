@@ -1,3 +1,4 @@
+using Source.Scripts.Weapon.Projectiles;
 using Source.Scripts.Weapon.Projectiles.Arrows;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Source.Scripts.Weapon.Bow.Components
         public void Perform(Arrow arrow, float currentTension)
         {
             Vector3 direction = CalculateDirection(arrow);
-            float velocity = arrow.Speed * currentTension;
+            float velocity = ((ArrowConfig)arrow.Config).Speed * currentTension;
             arrow.Fly(direction.normalized, velocity);
         }
 
