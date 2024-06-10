@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <TensionSpeed>k__BackingField: 1
   <ArrowCountPerShoot>k__BackingField: 1
+  <DefaultArrow>k__BackingField: {fileID: 3307004931086564603, guid: 673e0a1770007484f91caaab7891dc7f,
+    type: 3}

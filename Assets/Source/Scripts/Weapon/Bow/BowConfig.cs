@@ -1,3 +1,4 @@
+using Source.Scripts.Weapon.Projectiles.Arrows;
 using UnityEngine;
 
 namespace Source.Scripts.Weapon.Bow
@@ -7,5 +8,6 @@ namespace Source.Scripts.Weapon.Bow
     {
         [field: SerializeField] public float TensionSpeed { get; private set; } = 1f;
         [field: SerializeField] public int ArrowCountPerShoot { get; private set; } = 1;
+        [field: SerializeField] public Arrow DefaultArrow { get; private set; }
     }
 }

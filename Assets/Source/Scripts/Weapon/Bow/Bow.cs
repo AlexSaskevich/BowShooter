@@ -13,7 +13,6 @@ namespace Source.Scripts.Weapon.Bow
     public class Bow : MonoBehaviour, IEntity
     {
         [SerializeField] private Animator _animator;
-        [SerializeField] private Arrow _arrowPrefab;
         [SerializeField] private Transform _arrowPoint;
 
         private InputReader _inputReader;
@@ -61,7 +60,7 @@ namespace Source.Scripts.Weapon.Bow
 
         private void SpawnArrow()
         {
-            _currentArrow = LeanPool.Spawn(_arrowPrefab);
+            _currentArrow = LeanPool.Spawn(BowConfig.DefaultArrow);
             _currentArrow.Load(_arrowPoint);
             _currentArrow.Init(new ComponentContainer());
         }
