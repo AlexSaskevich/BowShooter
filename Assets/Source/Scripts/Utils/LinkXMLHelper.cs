@@ -1,6 +1,6 @@
 using System.Linq;
 using BehaviorDesigner.Runtime.Tasks;
-using EasyButtons;
+using Sirenix.OdinInspector;
 using Source.Scripts.BotEntity.Infrastructure.Actions;
 using Source.Scripts.BotEntity.Infrastructure.Conditions;
 using UnityEngine;

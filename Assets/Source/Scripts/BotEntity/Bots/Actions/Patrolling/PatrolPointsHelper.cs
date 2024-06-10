@@ -1,5 +1,5 @@
 using System.Linq;
-using EasyButtons;
+using Sirenix.OdinInspector;
 using Source.Scripts.Utils.Extensions;
 using UnityEditor;
 using UnityEngine;

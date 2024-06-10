@@ -1,4 +1,4 @@
-using EasyButtons;
+using Sirenix.OdinInspector;
 using Source.Scripts.BotEntity.Bots.Components;
 using Source.Scripts.HealthSystem;
 using Source.Scripts.Infrastructure;
