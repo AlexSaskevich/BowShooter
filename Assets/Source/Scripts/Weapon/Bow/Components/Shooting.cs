@@ -22,14 +22,14 @@ namespace Source.Scripts.Weapon.Bow.Components
             arrow.Fly(direction.normalized, velocity);
         }
 
-        private Vector3 CalculateDirection(Arrow arrow)
+        private Vector3 CalculateDirection(Projectile arrow)
         {
             Ray ray = _camera.ViewportPointToRay(_screenCenter);
 
             Vector3 targetPosition =
                 Physics.Raycast(ray, out RaycastHit raycastHit) ? raycastHit.point : ray.GetPoint(100);
 
-            return targetPosition - arrow.ArrowTransform.position;
+            return targetPosition - arrow.Transform.position;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Source.Scripts.Weapon.Projectiles
     {
         [field: SerializeField] public Rigidbody Rigidbody;
         [field: SerializeField] public ProjectileConfig Config { get; private set; }
+        [field: SerializeField] public Transform Transform { get; private set; }
 
         public IComponentContainer ComponentContainer { get; private set; }
 
