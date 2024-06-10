@@ -215,7 +215,4 @@ MonoBehaviour:
   Rigidbody: {fileID: 8851104974855644432}
   <Config>k__BackingField: {fileID: 11400000, guid: beac6f5d1001943c0be889a7cbc6f83b,
     type: 2}
-  _arrowTorque:
-    <Velocity>k__BackingField: 5
-    <AngularVelocityFactor>k__BackingField: 0.5
-  <ArrowTransform>k__BackingField: {fileID: 6742408105416783426}
+  <Transform>k__BackingField: {fileID: 6742408105416783426}

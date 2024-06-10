@@ -14,6 +14,11 @@ namespace Source.Scripts.Weapon.Projectiles.Arrows
             _arrowTorque = new ArrowTorque((ArrowConfig)Config);
         }
 
+        private void OnDisable()
+        {
+            _arrowTorque.StopAddTorque();
+        }
+
         public void Load(Transform parent)
         {
             Transform.parent = parent;
