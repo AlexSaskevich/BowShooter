@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Lean.Pool;
 using Source.Scripts.BotEntity.Bots.Components;
 using Source.Scripts.Infrastructure;
@@ -21,12 +23,14 @@ namespace Source.Scripts.Weapon.Bow
         private Shooting _shooting;
         private Tension _tension;
         private Arrow _currentArrow;
+        private CancellationTokenSource _fireCancellationTokenSource;
 
         public event Action Shoot;
         public event Action<float> Stretched;
 
         [field: SerializeField] public BowConfig BowConfig { get; private set; }
         public IComponentContainer ComponentContainer { get; private set; }
+        public bool IsFire { get; private set; }
 
         public void Init(InputReader inputReader, Camera playerCamera)
         {
@@ -41,21 +45,57 @@ namespace Source.Scripts.Weapon.Bow
         {
             if (_inputReader.IsFireButtonPressed)
             {
-                _currentTension =
-                    TensionCalculator.Calculate(_currentTension, _tension.MaxValue, BowConfig.TensionSpeed);
-                _tension.Set(_currentTension);
-                _bowView.PullBowstring(_currentTension);
-                Stretched?.Invoke(_currentTension);
+                Prepare();
             }
             else if (_inputReader.IsFireButtonWasReleased)
             {
-                _shooting.Perform(_currentArrow, _currentTension);
-                _bowView.ReleaseBowstring();
-                _tension.Set(_tension.MinValue);
-                _currentTension = _tension.MinValue;
-                SpawnArrow();
-                Shoot?.Invoke();
+                Fire();
             }
+        }
+
+        private void OnDestroy()
+        {
+            StopFire();
+        }
+
+        private void Prepare()
+        {
+            if (IsFire)
+            {
+                return;
+            }
+
+            _currentTension =
+                TensionCalculator.Calculate(_currentTension, _tension.MaxValue, BowConfig.TensionSpeed);
+            _tension.Set(_currentTension);
+            _bowView.PullBowstring(_currentTension);
+            Stretched?.Invoke(_currentTension);
+        }
+
+        private async void Fire()
+        {
+            if (IsFire)
+            {
+                return;
+            }
+
+            IsFire = true;
+            _fireCancellationTokenSource?.Cancel();
+            _fireCancellationTokenSource = new CancellationTokenSource();
+
+            for (int i = 0; i < BowConfig.ArrowCountPerShoot; i++)
+            {
+                _shooting.Perform(_currentArrow, _currentTension);
+                SpawnArrow();
+                await Task.Delay(TimeSpan.FromSeconds(BowConfig.DelayBetweenArrow));
+            }
+
+            _bowView.ReleaseBowstring();
+            _tension.Set(_tension.MinValue);
+            _currentTension = _tension.MinValue;
+            Shoot?.Invoke();
+            Debug.LogError("Finished!!!");
+            IsFire = false;
         }
 
         private void SpawnArrow()
@@ -63,6 +103,11 @@ namespace Source.Scripts.Weapon.Bow
             _currentArrow = LeanPool.Spawn(BowConfig.DefaultArrow);
             _currentArrow.Load(_arrowPoint);
             _currentArrow.Init(new ComponentContainer());
+        }
+
+        private void StopFire()
+        {
+            _fireCancellationTokenSource?.Cancel();
         }
     }
 }

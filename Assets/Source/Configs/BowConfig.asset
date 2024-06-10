@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: BowConfig
   m_EditorClassIdentifier: 
   <TensionSpeed>k__BackingField: 1
-  <ArrowCountPerShoot>k__BackingField: 1
+  <ArrowCountPerShoot>k__BackingField: 3
+  <DelayBetweenArrow>k__BackingField: 0.12
+  <IsBurstShooting>k__BackingField: 0
   <DefaultArrow>k__BackingField: {fileID: 3307004931086564603, guid: 673e0a1770007484f91caaab7891dc7f,
     type: 3}
